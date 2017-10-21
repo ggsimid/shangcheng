@@ -42,7 +42,7 @@
 
                         <!--prop对应关联的数据对象list里面的属性。其中全选框，选中整个date，所有数据 -->
 
-                        <el-table-column prop="date" label="全选" width="80">
+                        <el-table-column prop="date"  width="80">
                             <!--当前列的内容区域-->
                             <el-table-column
                                   type="selection"
@@ -51,16 +51,22 @@
                         </el-table-column>
 
                         <el-table-column prop="title" label="标题">
+                            <!-- 点击会跳转路由。-->
+                            <template scope="scope">
+                                <router-link v-bind="{to:'/admin/goodsedit/'+scope.row.id}">
+                                    {{scope.row.title}}
+                                </router-link>
+                            </template>
                         </el-table-column>
 
                         <el-table-column prop="categoryname" label="类别" width="100">
                         </el-table-column>
 
-                        <el-table-column label="发布人/发布时间" width="150">
+                        <el-table-column label="发布人/发布时间" width="200">
 
                             <!--为什么要添加template标签呢？还有scope是什么东西？ -->
-                            <template scope="scope">
-                                {{scope.row.user_name }} / {{scope.row.add_time}}
+                            <template scope="scope" width="150">
+                                {{scope.row.user_name }} / {{scope.row.add_time | date("YYYY-MM-DD")}}
                             </template>
                         </el-table-column>
 
@@ -69,7 +75,9 @@
 
                         <el-table-column label="操作" width="80">
                             <template scope="scope">
-                                    <a href="#">修改</a>
+                                    <router-link  v-bind="{to:'/admin/goodsedit/'+scope.row.id}">
+                                           <el-button type="success" size='mini'>编辑</el-button>
+                                    </router-link>
                             </template>
                         </el-table-column>
                 </el-table>
@@ -111,7 +119,7 @@
 
             // 用axios去发出具体的url的请求获取到数据后绑定到表格中
             getlist() {
-                console.log('jjjjjjjjjjj');
+
                 // 1.0 获取url
                 var url = '/admin/goods/getlist?pageIndex=1&pageSize=';
                 //this.$http = axios对象。

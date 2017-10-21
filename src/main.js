@@ -23,13 +23,16 @@ import layout from './components/admin/layout.vue';
 // 导入goodslist.vue
 import goodslist from './components/admin/goods/goodslist.vue';
 
+import goodsedit from './components/admin/goods/goodsedit.vue';
+
 var router = new vueRouter({
     routes:[
         {name:'default',path:'/',redirect:'/admin'},
         {name:'login',path:'/login',component:login},
         {name:'layout',path:'/admin',component:layout,
     children:[
-        {name:'goodslist',path:'goodslist',component:goodslist}
+        {name:'goodslist',path:'goodslist',component:goodslist},
+        {name:'goodsedit',path:'goodsedit',component:goodsedit}
     ]
 }
     ]
@@ -63,6 +66,27 @@ import '../statics/css/site.css';
 
 // 3.0.3 绑定
 Vue.use(elementUI);
+
+
+
+//设置全局过滤器
+Vue.filter('date',(input,fmtstring)=>{
+    var date = new Date(input);
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    var d = date.getDate();
+    var h = date.getHours();
+    var mi = date.getMinutes();
+    var s = date.getSeconds();
+    if(fmtstring=="YYYY-MM-DD"){
+        return y+"-"+m+"-"+d;
+    }else if(fmtstring=="YYYY-MM-DD-HH-mm-ss"){
+        return y+"-"+m+"-"+d+"-"+h+"-"+mi+"-"+s;
+    }
+});
+
+
+
 
 new Vue({
     el:'#app',
