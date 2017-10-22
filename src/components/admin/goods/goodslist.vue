@@ -70,7 +70,22 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column prop="name" label="属性" width="100">
+                        <el-table-column prop="name" label="属性" width="120">
+                            <!--表格里的多结构都要使用template，不仅仅是需要多个属性-->
+
+                            <template scope="scope">
+                                <el-tooltip class="item" effect="dark" v-bind='{content:(scope.row.is_slide==0?"进入轮播图":"取消轮播图")}'  placement="bottom">
+                                    <i v-bind='{class:"ls el-icon-picture"+(scope.row.is_slide==1?" imgactive":"")} ' ></i>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" v-bind='{content:(scope.row.is_top==0?"进入轮播图":"取消轮播图")}'  placement="bottom">
+                                     <i v-bind='{class:"ls el-icon-upload"+(scope.row.is_top==1?" imgactive":"" )}'  ></i>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" v-bind='{content:(scope.row.is_hot==0?"进入轮播图":"取消轮播图")}'  placement="bottom">
+                                     <i v-bind='{class:"ls el-icon-star-on"+(scope.row.is_hot==1?" imgactive":"") }' ></i>
+                                </el-tooltip>
+
+
+                            </template>
                         </el-table-column>
 
                         <el-table-column label="操作" width="80">
