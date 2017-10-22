@@ -98,14 +98,36 @@
                 </el-table>
             </el-col>
         </el-row>
+        <el-row>
+
+          <div class="block">
+                <!-- size-change和current-change事件来处理页码大小和当前页变动时候触发的事件。 -->
+                <el-pagination
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                  :current-page="currentPage"
+                  :page-sizes="[10, 20, 30, 50,100]"
+                  :page-size="10"
+                  layout="total, sizes, prev, pager, next, jumper"
+                  :total="total">
+                </el-pagination>
+          </div>
+
+        </el-row>
     </div>
 </template>
 <script>
     export default {
         data() {
             return {
+                //分页上的每页条数
+                size:10,
+                //分页的当前页数
+                currentPage:1,
                 // 搜索框的绑定属性
                 searchValue: '',
+                //总条数
+                total:0,
                 // 表格中的每行数据来源于list，而这个list将来是通过getlist()方法请求后台api接口获取到的
                 list: [],
                 //勾选上的ID字符串列表
@@ -118,6 +140,16 @@
             this.getlist();
         },
         methods: {
+            handleSizeChange(size){
+                this.size = size
+                console.log(size);
+                this.getlist();
+            },
+            handleCurrentChange(currentPage){
+                this.currentPage = currentPage
+                console.log(currentPage);
+                this.getlist();
+            },
             //选择会执行整个方法,参数selection是这一行的数据。
             handleSelectionChange(selection){
                 //获取所有的勾选的ID
@@ -136,10 +168,11 @@
             getlist() {
 
                 // 1.0 获取url
-                var url = '/admin/goods/getlist?pageIndex=1&pageSize=';
-                //this.$http = axios对象。
+                var url = '/admin/goods/getlist?pageIndex='+this.currentPage+'&pageSize='+this.size+'&searchvalue='+this.searchValue;
+                //this.$http = axios对象
                 this.$http.get(url).then(res => {
                     // 判断服务器返回的状态status
+                    console.log(res);
                     if (res.data.status == 1) {
                         this.$message.error(res.data.message);
                         return;
@@ -147,6 +180,9 @@
 
                     // 正常逻辑的处理,把请求回来的数据绑定到model层的list中。
                     this.list = res.data.message;
+                    // 将总数据条数赋值给total
+                     this.total = res.data.totalcount;
+                     console.log(res);
                 });
             },
             // 控制表格的隔行变色
